@@ -1,4 +1,9 @@
-import { calculateUnitsPerResidentSpace, formatUnitsPerResidentSpace } from '@/lib/calculations';
+import {
+  calculateUnitsPerResidentSpace,
+  formatUnitsPerResidentSpace,
+  calculateTotalParking,
+  formatParkingCell,
+} from '@/lib/calculations';
 import { mergeCustomParkingItems } from '@/lib/comparison';
 import { csvSafeguard } from '@/lib/formatters';
 import {
@@ -12,9 +17,23 @@ import type { Project } from '@/types/project';
 import type { ComparisonSettings } from '@/types/settings';
 import { cn } from '@/utils/cn';
 
-export function ParkingComparisonTable({ projects, settings }: { projects: Project[]; settings: ComparisonSettings }) {
+export function ParkingComparisonTable({
+  projects,
+  settings,
+}: {
+  projects: Project[];
+  settings: ComparisonSettings;
+}) {
   const rowPad = settings.density === 'compact' ? 'py-1' : 'py-2';
   const customRows = mergeCustomParkingItems(projects);
+
+  const parkingTotals = projects.map((p) =>
+    calculateTotalParking(
+      p.parking.residentParkingSpaces,
+      p.parking.others,
+      customRows.map((row) => row.valuesByProjectId[p.id]),
+    ),
+  );
 
   return (
     <ComparisonTableShell titleEn="Car Parking Spaces Comparison" titleZh="車位資料比較">
@@ -25,27 +44,42 @@ export function ParkingComparisonTable({ projects, settings }: { projects: Proje
         <tbody>
           <tr className="border-b border-slate-100 dark:border-slate-800">
             <td className={cn(stickyFirstColCellCls, rowPad)}>Resident Parking Spaces</td>
-            {projects.map((p) => (
+            {projects.map((p, i) => (
               <td key={p.id} className={cn(cellCls, rowPad)}>
-                {p.parking.residentParkingSpaces ?? '—'}
+                {formatParkingCell(
+                  p.parking.residentParkingSpaces,
+                  parkingTotals[i],
+                  settings.showCpsPercentage,
+                )}
               </td>
             ))}
           </tr>
+
           <tr className="border-b border-slate-100 dark:border-slate-800">
             <td className={cn(stickyFirstColCellCls, rowPad)}>Others</td>
-            {projects.map((p) => (
+            {projects.map((p, i) => (
               <td key={p.id} className={cn(cellCls, rowPad)}>
-                {p.parking.others ?? '—'}
+                {formatParkingCell(
+                  p.parking.others,
+                  parkingTotals[i],
+                  settings.showCpsPercentage,
+                )}
               </td>
             ))}
           </tr>
 
           {customRows.map((row) => (
             <tr key={row.key} className="border-b border-slate-100 dark:border-slate-800">
-              <td className={cn(stickyFirstColCellCls, rowPad)}>{csvSafeguard(row.displayName)}</td>
-              {projects.map((p) => (
+              <td className={cn(stickyFirstColCellCls, rowPad)}>
+                {csvSafeguard(row.displayName)}
+              </td>
+              {projects.map((p, i) => (
                 <td key={p.id} className={cn(cellCls, rowPad)}>
-                  {row.valuesByProjectId[p.id] ?? '—'}
+                  {formatParkingCell(
+                    row.valuesByProjectId[p.id],
+                    parkingTotals[i],
+                    settings.showCpsPercentage,
+                  )}
                 </td>
               ))}
             </tr>
@@ -60,12 +94,20 @@ export function ParkingComparisonTable({ projects, settings }: { projects: Proje
             ))}
           </tr>
 
-          <tr className={cn('font-semibold', settings.showCpsRemarks && 'border-b border-slate-100 dark:border-slate-800')}>
+          <tr
+            className={cn(
+              'font-semibold',
+              settings.showCpsRemarks && 'border-b border-slate-100 dark:border-slate-800',
+            )}
+          >
             <td className={cn(stickyFirstColCellCls, rowPad)}>Units per Resident Space</td>
             {projects.map((p) => (
               <td key={p.id} className={cn(cellCls, rowPad)}>
                 {formatUnitsPerResidentSpace(
-                  calculateUnitsPerResidentSpace(p.parking.totalResidentialUnits, p.parking.residentParkingSpaces),
+                  calculateUnitsPerResidentSpace(
+                    p.parking.totalResidentialUnits,
+                    p.parking.residentParkingSpaces,
+                  ),
                 )}
               </td>
             ))}
