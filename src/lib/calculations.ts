@@ -57,3 +57,49 @@ export function formatUnitsPerResidentSpace(value: number | null): string {
   if (value == null || Number.isNaN(value) || !Number.isFinite(value)) return '—';
   return value.toFixed(2);
 }
+
+export function calculateTotalParking(
+  residentParkingSpaces: number | null | undefined,
+  others: number | null | undefined,
+  customValues: Array<number | string | null | undefined> = [],
+): number | null {
+  const values = [residentParkingSpaces, others, ...customValues];
+
+  let total = 0;
+  let hasValue = false;
+
+  for (const value of values) {
+    const numericValue = typeof value === 'string' ? Number(value) : value;
+
+    if (
+      numericValue != null &&
+      !Number.isNaN(numericValue) &&
+      numericValue >= 0
+    ) {
+      total += numericValue;
+      hasValue = true;
+    }
+  }
+
+  return hasValue ? total : null;
+}
+
+export function formatParkingCell(
+  value: number | string | null | undefined,
+  total: number | null,
+  showPercentage: boolean,
+): string {
+  const numericValue = typeof value === 'string' ? Number(value) : value;
+
+  if (numericValue == null || Number.isNaN(numericValue)) {
+    return '—';
+  }
+
+  if (!showPercentage || total == null || total <= 0) {
+    return formatNumber(numericValue);
+  }
+
+  const percentage = (numericValue / total) * 100;
+
+  return `${formatNumber(numericValue)} (${percentage.toFixed(1)}%)`;
+}
