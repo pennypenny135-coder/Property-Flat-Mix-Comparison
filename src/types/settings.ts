@@ -30,6 +30,7 @@ export type ComparisonSettings = {
   showClubhouseNotes: boolean;
   showCommunalGardenNotes: boolean;
   showCpsRemarks: boolean;
+  showCpsPercentage: boolean;
   hideEmptyUnitTypes: boolean;
   showInventoryPercentage: boolean;
   showTotalPercentage: boolean;
@@ -48,6 +49,7 @@ export const DEFAULT_COMPARISON_SETTINGS: ComparisonSettings = {
   showClubhouseNotes: false,
   showCommunalGardenNotes: false,
   showCpsRemarks: true,
+  showCpsPercentage: false,
   hideEmptyUnitTypes: false,
   showInventoryPercentage: true,
   showTotalPercentage: false,
