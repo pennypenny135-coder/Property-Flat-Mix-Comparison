@@ -31,20 +31,41 @@ export function ComparisonSettingsPanel({
 }) {
   return (
     <div className="grid gap-x-6 gap-y-1 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-2 dark:border-slate-800 dark:bg-slate-900">
-      <Toggle label="顯示 Clubhouse Area" checked={settings.showClubhouseArea} onChange={(v) => onUpdate({ showClubhouseArea: v })} />
+      <Toggle
+        label="顯示 Clubhouse Area"
+        checked={settings.showClubhouseArea}
+        onChange={(v) => onUpdate({ showClubhouseArea: v })}
+      />
       <Toggle
         label="顯示 Communal Garden or Play Area"
         checked={settings.showCommunalGardenArea}
         onChange={(v) => onUpdate({ showCommunalGardenArea: v })}
       />
-      <Toggle label="顯示一般備註" checked={settings.showGeneralNotes} onChange={(v) => onUpdate({ showGeneralNotes: v })} />
-      <Toggle label="顯示 Clubhouse Notes" checked={settings.showClubhouseNotes} onChange={(v) => onUpdate({ showClubhouseNotes: v })} />
+      <Toggle
+        label="顯示一般備註"
+        checked={settings.showGeneralNotes}
+        onChange={(v) => onUpdate({ showGeneralNotes: v })}
+      />
+      <Toggle
+        label="顯示 Clubhouse Notes"
+        checked={settings.showClubhouseNotes}
+        onChange={(v) => onUpdate({ showClubhouseNotes: v })}
+      />
       <Toggle
         label="顯示 Communal Garden / Play Area Notes"
         checked={settings.showCommunalGardenNotes}
         onChange={(v) => onUpdate({ showCommunalGardenNotes: v })}
       />
-      <Toggle label="顯示 CPS Remarks" checked={settings.showCpsRemarks} onChange={(v) => onUpdate({ showCpsRemarks: v })} />
+      <Toggle
+        label="顯示 CPS Remarks"
+        checked={settings.showCpsRemarks}
+        onChange={(v) => onUpdate({ showCpsRemarks: v })}
+      />
+      <Toggle
+        label="顯示 CPS Percentage"
+        checked={settings.showCpsPercentage}
+        onChange={(v) => onUpdate({ showCpsPercentage: v })}
+      />
       <Toggle
         label="隱藏沒有資料的戶型"
         checked={settings.hideEmptyUnitTypes}
@@ -55,26 +76,43 @@ export function ComparisonSettingsPanel({
         checked={settings.showInventoryPercentage}
         onChange={(v) => onUpdate({ showInventoryPercentage: v })}
       />
-      <Toggle label="顯示 Total Percentage" checked={settings.showTotalPercentage} onChange={(v) => onUpdate({ showTotalPercentage: v })} />
-      <Toggle label="顯示地區 District" checked={settings.showDistrict} onChange={(v) => onUpdate({ showDistrict: v })} />
+      <Toggle
+        label="顯示 Total Percentage"
+        checked={settings.showTotalPercentage}
+        onChange={(v) => onUpdate({ showTotalPercentage: v })}
+      />
+      <Toggle
+        label="顯示地區 District"
+        checked={settings.showDistrict}
+        onChange={(v) => onUpdate({ showDistrict: v })}
+      />
 
       <div className="col-span-full mt-2 grid gap-3 border-t border-slate-100 pt-3 sm:grid-cols-2 dark:border-slate-800">
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Table Density</label>
+          <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">
+            Table Density
+          </label>
           <select
             value={settings.density}
-            onChange={(e) => onUpdate({ density: e.target.value as ComparisonSettingsType['density'] })}
+            onChange={(e) =>
+              onUpdate({ density: e.target.value as ComparisonSettingsType['density'] })
+            }
             className="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-800"
           >
             <option value="comfortable">Comfortable</option>
             <option value="compact">Compact</option>
           </select>
         </div>
+
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Header Language</label>
+          <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">
+            Header Language
+          </label>
           <select
             value={settings.headerLanguage}
-            onChange={(e) => onUpdate({ headerLanguage: e.target.value as ComparisonSettingsType['headerLanguage'] })}
+            onChange={(e) =>
+              onUpdate({ headerLanguage: e.target.value as ComparisonSettingsType['headerLanguage'] })
+            }
             className="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-800"
           >
             <option value="zh">中文</option>
